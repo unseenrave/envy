@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>envy privacy policy</title>
-<meta name="description" content="what the envy discord bot stores about you, and how to have it deleted.">
+<meta name="description" content="what the envy discord bot stores about you, how it is protected, how to opt out and how to have it deleted.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,37 +18,59 @@
   </nav>
 </header>
 <h1>envy privacy policy</h1>
-<p class="stamp">Last updated: 11 October 2026</p>
-<p>envy is a private Discord bot that runs in one server and cannot be added to others. This page explains what it stores, why, and how to get rid of it. If anything here is unclear, open a ticket in the server.</p>
+<p class="stamp">Last updated: 25 October 2026</p>
+<p>envy is a private Discord bot that only runs in the vyl community's servers and leaves any other server it is added to. This page explains what it stores, why, how it is protected, and how you can opt out, see your data or have it deleted. If anything here is unclear, open a ticket in the server.</p>
+
+<h2>The short version</h2>
+<ul><li>Message content is mainly used for moderation (the image filter, the blocked word filter and the invite link filter). The bot does not save it, apart from ticket transcripts and the AI's short memory described below.</li><li>Everything the bot saves is encrypted at rest with AES-256.</li><li>Nothing is sold, shared or used for advertising, and nothing is ever used to train an AI model.</li><li><code>/optout</code> stops activity tracking, <code>/mydata</code> shows and exports everything stored about you, and <code>/deletedata me</code> deletes it.</li></ul>
+
 <h2>What is stored</h2>
-<p>Discord IDs, and nothing else that identifies you. That means your user ID, the server ID, and whichever channel or role IDs a feature needs to work. No usernames, display names, email addresses, avatars, IP addresses or payment details are saved.</p>
+<p>Mostly Discord IDs: your user ID, the server ID, and whichever channel or role IDs a feature needs to work. A few features also keep a small piece of text that you or staff chose: your personal prefix, autoresponders and autoreactions you write, phrases staff blocked you from saying, a nickname staff locked on you, and your booster role's name and colour. No email addresses, passwords, phone numbers, IP addresses or payment details are ever saved.</p>
 <p>Those IDs are attached to:</p>
-<ul><li>invite counts per inviter, and a record of which inviter a joining member came from</li><li>warnings, each one holding the target's ID, the moderator's ID, a reason and a timestamp</li><li>the role IDs held for a member while they are jailed, so they can be given back on release</li><li>the ID of a booster's personal role</li><li>economy balances, streaks, and message and voice activity counts used for leaderboards</li><li>settings: prefixes, ticket configuration, autoresponders, blocked words and phrases set against a member, log channels</li></ul>
+<ul><li>invite counts per inviter, and which inviter a joining member came from</li><li>warnings, each holding the member's ID, the moderator's ID, a reason and a timestamp</li><li>the role IDs held for a member while they are jailed, so they can be given back on release</li><li>image filter strikes</li><li>a booster's personal role</li><li>daily streaks, marriages, friend groups and giveaway entries</li><li>message and voice activity counts used for the leaderboards</li><li>songs you play with the music player (title, link and server)</li><li>settings: prefixes, ticket configuration, filters, log channels and similar</li></ul>
+
+<h2>Server member data</h2>
+<p>The bot uses the server members list for moderation and server features: checking new members' names against the inappropriate name filter, keeping a nickname that staff locked in place, crediting invites when someone joins, jailing and restoring roles, and showing member counts and leaderboards. It does not collect member lists, and nothing about a member is saved unless one of those features needs it.</p>
+
 <h2>Message content</h2>
-<p>Message content is read but not kept, with one exception.</p>
-<p>Commands, the blocked word filter, the invite link filter and the snipe command all read message text in memory and discard it. Snipes hold the last deleted or edited message for a channel in memory only, and are lost whenever the bot restarts. None of this is written to disk.</p>
-<p>The exception is ticket transcripts. When a ticket channel is closed, the conversation in that one channel is saved as an HTML document, posted to a staff channel and sent by DM to the person who opened the ticket.</p>
-<p>That document is also stored in a Postgres database hosted by <a href="https://supabase.com">Supabase</a>, so it can be opened in a browser. Supabase acts as a data processor on our behalf and encrypts what it holds at rest. They are the only third party that ever sees any of this data.</p>
-<p>Transcripts are not public. Opening one requires signing in with Discord, and access is then checked against your permissions, so anyone without permission is refused. Transcripts can be turned off entirely, and any transcript can be deleted on request.</p>
+<p>The bot reads message text and attachments so it can:</p>
+<ul><li>remove explicit images with the image filter</li><li>remove blocked words and phrases, including spaced out or disguised versions</li><li>remove Discord invite links where a server does not allow them</li><li>answer autoresponder and autoreaction triggers that a server set up</li><li>show the last deleted or edited message in a channel (snipe), held in memory only</li><li>answer people who mention or reply to the AI in its channel</li></ul>
+<p>This happens in memory and the text is discarded straight away. Snipes are lost whenever the bot restarts. Message content is only written down in these cases:</p>
+<ul><li><strong>Ticket transcripts.</strong> When staff close a ticket, the conversation in that one ticket channel is saved as an HTML document, posted to a staff channel and sent by DM to the person who opened it. Messages deleted inside an open ticket are kept until it closes so they still appear in the transcript, then removed from the bot's server.</li><li><strong>The AI's short memory.</strong> The AI keeps the last few messages people sent it in its channel, so it can follow the conversation. Older messages roll off automatically.</li><li><strong>The command log.</strong> Commands people run are posted to a private staff channel on Discord so the bot owner can find bugs.</li><li><strong>The channel mirror.</strong> The bot owner can mirror one channel into another channel on Discord.</li></ul>
+<p>Message content is never used to build profiles, never sold or shared, and never used to train or fine tune any AI model.</p>
+
+<h2>Opting out</h2>
+<p>Run <code>/optout</code> at any time. It stops:</p>
+<ul><li>your messages being counted for the chat leaderboards or friend group stats</li><li>your music play history being saved</li><li>your deleted and edited messages being sniped</li><li>your commands being logged</li><li>the AI reading your messages or keeping anything you say</li><li>your messages being copied by the channel mirror</li></ul>
+<p>It also clears your existing message counts and anything the AI remembered from you. <code>/optin</code> turns it back on. The moderation filters (images, blocked words, invite links and names) still apply to everyone, because they keep the server safe.</p>
+
 <h2>The AI feature</h2>
-<p>A server may designate one channel where the bot replies conversationally. That feature runs a self hosted language model on hardware we control. Message content from it is never sent to OpenAI, Anthropic, Google or any other third party, and no message is ever used to train or fine tune a model.</p>
+<p>A server may choose one channel where the bot replies when you mention it or reply to it. It runs a self hosted language model on hardware we control. Nothing you type is sent to OpenAI, Anthropic, Google or any other third party, and no message is ever used to train or fine tune a model.</p>
+
 <h2>The image filter</h2>
 <p>Image attachments and image links are checked by a classifier running on the same machine as the bot. Images are not uploaded to any third party service, and nothing is retained after the check completes.</p>
-<h2>Where the data lives</h2>
-<p>Everything apart from ticket transcripts is stored as JSON files on a private server we operate, encrypted at rest. Transcripts additionally sit in the Supabase hosted database described above.</p>
-<p>Supabase is the only third party involved, and only for transcripts. Nothing is sold, rented, shared with anyone else, or used for advertising.</p>
+
+<h2>Where the data lives and how it is protected</h2>
+<p>Everything the bot saves is kept in files on a private server we operate. Every one of those files, and every backup of them, is encrypted with AES-256-GCM before it is written. The key is kept separately from the data, so the files cannot be read without it. Only the bot owner has access to the server.</p>
+<p>Ticket transcripts and music play history are also stored in a Postgres database hosted by <a href="https://supabase.com">Supabase</a>, which acts as a data processor on our behalf and encrypts what it holds at rest. Transcripts are not public: opening one requires signing in with Discord, and access is checked against your permissions. Supabase is the only third party involved.</p>
+
 <h2>Keeping it</h2>
-<p>Data is kept for as long as the bot is in your server and the feature is in use. When the bot is removed from a server, that server's data stops being used and can be deleted on request.</p>
-<h2>Getting it deleted</h2>
-<p>Ask and it is removed.</p>
-<ul><li>A server owner can request everything stored for their server be deleted.</li><li>Any user can request their own records and ticket transcripts be deleted.</li></ul>
-<p>Requests are handled by opening a ticket in the server, or by messaging the owner directly. There is no charge and no requirement to give a reason.</p>
+<ul><li>Most data is kept while the bot is in your server and the feature is in use, until you delete it.</li><li>Snipes last until the bot restarts.</li><li>The AI's memory only ever holds the last few messages in its channel.</li><li>Messages deleted inside a ticket are kept until that ticket closes.</li><li>When the bot leaves a server, everything stored for that server is deleted automatically after 30 days.</li><li>Encrypted backups of the bot's files are made every 6 hours and kept for up to 30 days, so nothing is lost to a crash. <code>/deletedata</code> removes your data from those backups too.</li></ul>
+
+<h2>Seeing and deleting your data</h2>
+<ul><li><code>/mydata</code> shows everything stored about you and gives you a full copy as a file, only visible to you.</li><li><code>/deletedata me</code> deletes everything stored about you, in every server, straight away.</li><li><code>/deletedata server</code> lets a server owner delete everything stored for their server.</li></ul>
+<p>Moderation records (warnings, jail records, word blocks and ticket transcripts) belong to the server's moderation and are not removed by <code>/deletedata me</code>. The server owner can remove them with <code>/deletedata server</code>, and you can ask for any of them to be deleted by opening a ticket or messaging the bot owner. There is no charge and no requirement to give a reason.</p>
+
+<h2>Children</h2>
+<p>The bot is meant for people old enough to use Discord in their country, as required by Discord's own terms.</p>
+
 <h2>Changes</h2>
 <p>If this policy changes, the updated date at the top changes with it. Material changes are announced in the server.</p>
+
 <h2>Contact</h2>
 <p>Open a ticket in the server, or message the bot owner on Discord.</p>
 <footer>
-  envy is a private discord bot running in one server. questions, or to have your data deleted, open a ticket in that server.
+  envy is a private discord bot for the vyl community. questions, or to have your data deleted, use /deletedata or open a ticket in the server.
 </footer>
 </div>
 </body>
